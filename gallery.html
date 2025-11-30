@@ -80,109 +80,26 @@
 
     <!-- 頁腳 (Footer) 區塊 -->
 
-    <script>
-      // ---------------------------------------------
-      // 行動裝置菜單 (Header JS) - 已更新為 Max-Height 動畫
-      // ---------------------------------------------
-      const mobileMenuButton = document.getElementById('mobile-menu-button')
-      const mobileMenu = document.getElementById('mobile-menu')
-      const menuIcon = document.getElementById('menu-icon')
-      const closeIcon = document.getElementById('close-icon')
+     <script>
+      // 先載入 Header
+      // fetch('/header.html')
+      //   .then((res) => res.text())
+      //   .then((html) => {
+      //     document.getElementById('header-placeholder').innerHTML = html
 
-      // ---------------------------------------------
-      // 輪播圖邏輯 (Carousel JS)
-      // ---------------------------------------------
-      const track = document.getElementById('carouselTrack')
-      const slides = Array.from(track.children)
-      const nextButton = document.getElementById('nextBtn')
-      const prevButton = document.getElementById('prevBtn')
-      const dotsContainer = document.getElementById('dotsContainer')
-      const slideCount = slides.length
-      let currentSlideIndex = 0
+      //     // Header 插入後再執行 Header 的 JS 初始化
+      //     initHamburgerMenu()
+      //     initHeaderVars()
+      //   })
 
-      // 1. 導航圓點生成
-      const generateDots = () => {
-        for (let i = 0; i < slideCount; i++) {
-          const dot = document.createElement('button')
-          // 使用 teal-500 作為 active 顏色，與 Header 主色調一致
-          dot.classList.add(
-            'dot',
-            'h-3',
-            'w-3',
-            'rounded-full',
-            'bg-gray-300',
-            'hover:bg-teal-400',
-            'focus:outline-none'
-          )
-          dot.setAttribute('data-index', i)
-          dot.addEventListener('click', () => moveToSlide(i))
-          dotsContainer.appendChild(dot)
-        }
-      }
+      // // 再載入 Footer
+      // fetch('/footer.html')
+      //   .then((res) => res.text())
+      //   .then((html) => {
+      //     document.getElementById('footer-placeholder').innerHTML = html
+      //   })
 
-      // 2. 核心滑動邏輯
-      const updateCarousel = () => {
-        const amountToMove = -currentSlideIndex * 100
-        track.style.transform = `translateX(${amountToMove}%)`
-
-        // 更新圓點狀態
-        Array.from(dotsContainer.children).forEach((dot, index) => {
-          dot.classList.remove('active', 'bg-teal-600')
-          dot.classList.add('bg-gray-300')
-          if (index === currentSlideIndex) {
-            dot.classList.add('active', 'bg-teal-600')
-            dot.classList.remove('bg-gray-300')
-          }
-        })
-      }
-
-      const moveToSlide = (index) => {
-        currentSlideIndex = index
-        updateCarousel()
-      }
-
-      const moveNext = () => {
-        currentSlideIndex = (currentSlideIndex + 1) % slideCount
-        updateCarousel()
-      }
-
-      const movePrev = () => {
-        currentSlideIndex = (currentSlideIndex - 1 + slideCount) % slideCount
-        updateCarousel()
-      }
-
-      // 3. 事件監聽
-      nextButton.addEventListener('click', moveNext)
-      prevButton.addEventListener('click', movePrev)
-
-      // 4. 初始化
-      window.onload = () => {
-        generateDots()
-        updateCarousel() // 設置初始狀態
-
-        // 設定版權年份
-        document.getElementById('current-year').textContent = new Date().getFullYear()
-      }
-    </script>
-    <script>
-      function scaleHeader() {
-        const wrapper = document.getElementById('header-wrapper')
-        const screenWidth = window.innerWidth
-        const minWidth = 360 // 360 以下開始縮放
-
-        if (screenWidth < minWidth) {
-          const scale = screenWidth / minWidth
-          wrapper.style.transform = `scale(${scale})`
-        } else {
-          wrapper.style.transform = 'scale(1)'
-        }
-      }
-
-      window.addEventListener('resize', scaleHeader)
-      window.addEventListener('load', scaleHeader)
-    </script>
-    <script>
-       async function loadNav() {
+      async function loadNav() {
         const headerContainer = document.getElementById('header-placeholder')
         const header = await fetch('./header.html')
         const headerhtml = await header.text()
@@ -197,7 +114,8 @@
         initHeaderVars()
       }
       loadNav()
-       function initHeaderVars() {
+      // 將 header DOM 綁定拆成一個 function
+      function initHeaderVars() {
         window.mobileMenuButton = document.getElementById('mobile-menu-button')
         window.mobileMenu = document.getElementById('mobile-menu')
         window.menuIcon = document.getElementById('menu-icon')
@@ -205,37 +123,29 @@
 
         console.log('Header DOM 綁定完畢')
       }
+    </script>
 
-      // 漢堡選單功能：動畫 + 開合
+   
+
+    <script>
+      // 漢堡選單初始化
       function initHamburgerMenu() {
         const btn = document.getElementById('mobile-menu-button')
         const menu = document.getElementById('mobile-menu')
         const menuIcon = document.getElementById('menu-icon')
         const closeIcon = document.getElementById('close-icon')
 
-        if (!btn || !menu) {
-          console.warn('Header 尚未載入完成，或按鈕找不到。')
-          return
-        }
+        if (!btn || !menu) return
 
         btn.addEventListener('click', () => {
-          const isOpen = !menu.classList.contains('max-h-0')
+          const open = menu.classList.contains('max-h-0')
+          menu.classList.toggle('max-h-0', !open)
+          menu.classList.toggle('max-h-96', open)
+          menu.classList.toggle('opacity-0', !open)
+          menu.classList.toggle('opacity-100', open)
 
-          if (isOpen) {
-            // 關閉
-            menu.classList.replace('max-h-96', 'max-h-0')
-            menu.classList.replace('opacity-100', 'opacity-0')
-
-            menuIcon.classList.remove('hidden')
-            closeIcon.classList.add('hidden')
-          } else {
-            // 打開
-            menu.classList.replace('max-h-0', 'max-h-96')
-            menu.classList.replace('opacity-0', 'opacity-100')
-
-            menuIcon.classList.add('hidden')
-            closeIcon.classList.remove('hidden')
-          }
+          menuIcon.classList.toggle('hidden', open)
+          closeIcon.classList.toggle('hidden', !open)
         })
       }
     </script>
