@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>頭皮理療 | Style Salon</title>
+    <!-- 載入 Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* 導航連結樣式 (與首頁保持一致) */
+      .nav-link {
+        @apply text-gray-700 hover:text-teal-600 transition duration-150 py-5;
+      }
+      /* 更新: '頭皮理療' 頁面的 active 樣式 */
+      .nav-link.active {
+        @apply text-teal-700 font-bold border-b-3 border-teal-600;
+        border-bottom-width: 3px;
+      }
+      .mobile-menu-link {
+        @apply block px-3 py-3 text-base font-medium text-gray-700 hover:bg-teal-50 hover:text-teal-600 rounded-md;
+      }
+      .mobile-menu-link.active {
+        @apply bg-teal-100 text-teal-700;
+      }
+
+      /* 行動裝置菜單切換動畫 */
+      #mobile-menu {
+        transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+      }
+
+      /* FAQ 內容區塊的動畫效果 */
+      .accordion-content {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+        padding-left: 1.25rem; /* px-5 */
+        padding-right: 1.25rem; /* px-5 */
+        /* 初始狀態沒有 padding-top/bottom */
+      }
+      .accordion-content.open {
+        /* 預設一個足夠大的高度，實際內容會撐開它 */
+        max-height: 500px;
+        padding-top: 1rem; /* pt-4 */
+        padding-bottom: 1rem; /* pb-4 */
+      }
+      .accordion-icon {
+        transition: transform 0.3s ease-in-out;
+      }
+      .accordion-button[aria-expanded='true'] .accordion-icon {
+        transform: rotate(180deg);
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 font-sans">
+    <!-- 響應式 Header 導航欄 (更新 Active Link) -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+          <!-- 品牌標誌 -->
+          <a href="index.html" class="flex-shrink-0">
+            <img
+              src="https://placehold.co/150x40/047878/FFFFFF?text=Style+LOGO"
+              alt="[Style Salon 品牌標誌]"
+              class="h-10 w-auto rounded-md"
+              onerror="this.src='https://placehold.co/150x40/047878/FFFFFF?text=LOGO';"
+            />
+          </a>
+
+          <div class="flex items-center space-x-6">
+            <!-- 桌面導航 - 將 '服務項目' 替換為 '頭皮理療' 並設定為 active -->
+            <nav class="hidden md:flex space-x-6 lg:space-x-10 h-full items-center">
+              <a href="./index.html" class="nav-link">HOME</a>
+              <a href="./about.html" class="nav-link">ABOUT US</a>
+              <a href="./machine.html" class="nav-link active">AI MACHINE</a>
+              <!-- 當前頁面 -->
+              <a href="./services.html" class="nav-link">SERVICES</a>
+              <a href="./gallery.html" class="nav-link">PORTFOLIO</a>
+              <a href="./contact.html" class="nav-link">CONTACT US</a>
+            </nav>
+
+            <!-- 預約按鈕 -->
+            <a
+              href="./contact.html"
+              class="hidden md:inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-bold rounded-full text-white bg-teal-600 hover:bg-teal-700 transition duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
+            >
+              立即預約
+            </a>
+
+            <!-- 行動裝置菜單按鈕 -->
+            <button
+              id="mobile-menu-button"
+              class="md:hidden text-gray-700 hover:text-teal-600 focus:outline-none p-2 rounded-lg hover:bg-gray-100 transition duration-150"
+            >
+              <!-- 漢堡/關閉圖標 -->
+              <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path
+                  id="menu-icon"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+                <path
+                  id="close-icon"
+                  class="hidden"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 行動裝置菜單 - 將 '服務項目' 替換為 '頭皮理療' 並設定為 active -->
+      <div id="mobile-menu" class="md:hidden max-h-0 overflow-hidden opacity-0 border-t border-gray-100 bg-white">
+        <div class="flex flex-col px-2 pt-2 pb-3 space-y-2 sm:px-3">
+          <a href="index.html" class="mobile-menu-link">首頁</a>
+          <a href="about.html" class="mobile-menu-link">關於我們</a>
+          <a href="scalp_therapy.html" class="mobile-menu-link active">頭皮理療</a>
+          <!-- 當前頁面 -->
+          <a href="gallery.html" class="mobile-menu-link">造型畫廊</a>
+          <a href="contact.html" class="mobile-menu-link">聯繫我們</a>
+        </div>
+        <a
+          href="contact.html"
+          class="w-full flex items-center justify-center px-4 py-4 border border-transparent text-base font-bold text-white bg-teal-600 hover:bg-teal-700 transition duration-300 shadow-inner"
+        >
+          立即預約
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <!-- 頂部標題區域 -->
+      <section class="bg-teal-600 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 class="text-5xl font-extrabold text-white mb-4">專業頭皮理療方案</h1>
+          <p class="text-xl text-teal-200">從根源解決問題，重現髮絲與頭皮的健康活力。</p>
+        </div>
+      </section>
+
+      <!-- 第一欄: 理療六大功能 (圖片左, 文字右) -->
+      <section class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex flex-col md:flex-row items-center gap-10 lg:gap-16">
+            <!-- 左側：圖片 -->
+            <div
+              class="md:w-1/2 rounded-xl shadow-2xl overflow-hidden transform hover:scale-[1.02] transition duration-500 order-1"
+            >
+              <img src="./images/machine01.png" alt="[頭皮理療儀器圖片]" class="w-full h-full object-cover" />
+            </div>
+
+            <!-- 右側：六大功能介紹 -->
+            <div class="md:w-1/2 space-y-8 order-2">
+              <span class="text-sm font-semibold text-teal-600 uppercase tracking-wider">我們的專業</span>
+              <h2 class="text-4xl font-bold text-gray-800">六大功能，全面呵護頭皮健康</h2>
+              <p class="text-gray-600 text-lg leading-relaxed">
+                我們的專業理療師將使用最先進的儀器和天然產品，為您的頭皮進行深度淨化與滋養，解決各種惱人的頭皮問題。
+              </p>
+
+              <!-- 六大功能網格 -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                <!-- 功能 1: 深度淨化 -->
+                <div class="flex items-start">
+                  <div class="p-2 bg-teal-100 rounded-full text-teal-600 mr-3 mt-1 flex-shrink-0">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.143M21 21v-7a3 3 0 00-3-3h-2"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-gray-800">深度淨化</h4>
+                    <p class="text-sm text-gray-500">清除毛囊內積聚的油脂與化學殘留。</p>
+                  </div>
+                </div>
+
+                <!-- 功能 2: 舒緩敏感 -->
+                <div class="flex items-start">
+                  <div class="p-2 bg-teal-100 rounded-full text-teal-600 mr-3 mt-1 flex-shrink-0">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 12l2 2 4-4m5.618-4.242a2.24 2.24 0 010 3.168l-3.2 3.168a2.24 2.24 0 01-3.168 0L9 12M5 12h.01M19 12h.01M15 16h.01"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-gray-800">舒緩敏感</h4>
+                    <p class="text-sm text-gray-500">鎮靜紅腫與發癢，恢復頭皮屏障。</p>
+                  </div>
+                </div>
+
+                <!-- 功能 3: 油脂平衡 -->
+                <div class="flex items-start">
+                  <div class="p-2 bg-teal-100 rounded-full text-teal-600 mr-3 mt-1 flex-shrink-0">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M9 19V6.353m0 0a2 2 0 10-4 0v12m4-12a2 2 0 114 0v12m-4-12h4m-4 0H5m4 0a2 2 0 114 0m4 0a2 2 0 114 0m-4-12v12m0 0V6.353m0 0a2 2 0 10-4 0v12m4-12a2 2 0 114 0v12m-4-12h4m-4 0H5m4 0a2 2 0 114 0"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-gray-800">油脂平衡</h4>
+                    <p class="text-sm text-gray-500">調節皮脂腺分泌，告別油膩髮根。</p>
+                  </div>
+                </div>
+
+                <!-- 功能 4: 強健髮根 -->
+                <div class="flex items-start">
+                  <div class="p-2 bg-teal-100 rounded-full text-teal-600 mr-3 mt-1 flex-shrink-0">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-gray-800">強健髮根</h4>
+                    <p class="text-sm text-gray-500">注入生長因子，減少非正常落髮。</p>
+                  </div>
+                </div>
+
+                <!-- 功能 5: 循環促進 -->
+                <div class="flex items-start">
+                  <div class="p-2 bg-teal-100 rounded-full text-teal-600 mr-3 mt-1 flex-shrink-0">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-gray-800">循環促進</h4>
+                    <p class="text-sm text-gray-500">透過按摩和儀器刺激頭皮血液循環。</p>
+                  </div>
+                </div>
+
+                <!-- 功能 6: 壓力釋放 -->
+                <div class="flex items-start">
+                  <div class="p-2 bg-teal-100 rounded-full text-teal-600 mr-3 mt-1 flex-shrink-0">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-gray-800">壓力釋放</h4>
+                    <p class="text-sm text-gray-500">專業按摩手法，幫助全身放鬆減壓。</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- 第三欄: 5 張卡片 (3 + 2 佈局) -->
+      <section class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-4xl font-extrabold text-gray-900 text-center mb-12">自動洗頭機五大特色</h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- 第一排 3 張卡片 -->
+            <div
+              class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1 space-y-3"
+            >
+              <div
+                class="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center text-teal-600 font-bold text-xl mb-3"
+              >
+                1
+              </div>
+              <h4 class="text-xl font-bold text-gray-800">高壓水柱深層清潔不掉髮</h4>
+              <p class="text-gray-500">強力水柱深入毛孔徹底清潔，溫和不傷髮質，洗得乾淨也洗得安心無負擔。</p>
+            </div>
+
+            <div
+              class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1 space-y-3"
+            >
+              <div
+                class="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center text-teal-600 font-bold text-xl mb-3"
+              >
+                2
+              </div>
+              <h4 class="text-xl font-bold text-gray-800">客製化服務</h4>
+              <p class="text-gray-500">多段智能洗髮模式任意選擇，自由調整節奏與強度，滿足各種不同頭皮需求。</p>
+            </div>
+
+            <div
+              class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1 space-y-3"
+            >
+              <div
+                class="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center text-teal-600 font-bold text-xl mb-3"
+              >
+                3
+              </div>
+              <h4 class="text-xl font-bold text-gray-800">U形水柱180度無死角</h4>
+              <p class="text-gray-500">U型環繞水柱全面包覆，360 度沖洗無死角，髮絲柔順不打結更滑順。</p>
+            </div>
+
+            <!-- 第二排 2 張卡片 (使用 flex + grid 實現居中) -->
+            <!-- sm:col-span-2 ensures that on tablet size (sm), these two cards still get good horizontal space. -->
+            <div class="sm:col-span-2 lg:col-span-3 flex justify-center mt-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 lg:w-2/3 xl:w-1/2">
+                <div
+                  class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1 space-y-3"
+                >
+                  <div
+                    class="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center text-teal-600 font-bold text-xl mb-3"
+                  >
+                    4
+                  </div>
+                  <h4 class="text-xl font-bold text-gray-800">解放雙手懶人福音</h4>
+                  <p class="text-gray-500">一鍵啟動全自動洗髮流程，徹底解放雙手，懶人與專業沙龍的夢幻選擇。</p>
+                </div>
+
+                <div
+                  class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition duration-300 transform hover:-translate-y-1 space-y-3"
+                >
+                  <div
+                    class="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center text-teal-600 font-bold text-xl mb-3"
+                  >
+                    5
+                  </div>
+                  <h4 class="text-xl font-bold text-gray-800">紅外線光刺激毛囊增生</h4>
+                  <p class="text-gray-500">紅外線深層刺激頭皮毛囊，促進血液循環與生髮，髮量自然更健康濃密。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 第四欄: 4 張卡片 (一排 4 張佈局) -->
+      <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-4xl font-extrabold text-gray-900 text-center mb-12">公司產品優勢</h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- 4 張卡片 -->
+            <div
+              class="flex flex-col items-center text-center bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300"
+            >
+              <div class="text-teal-600 mb-4">
+                <!--  -->
+                <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14 10h4.764a2 2 0 011.857 2.153l-2.548 9.548A2 2 0 0117.214 22H6.786a2 2 0 01-1.857-2.148l2.548-9.548A2 2 0 019.236 10H14zm-4 0v4m0 0l4 4m-4-4l-4 4"
+                  />
+                </svg>
+              </div>
+              <h4 class="text-xl font-bold text-gray-800 mb-2">降低人力成本</h4>
+              <p class="text-gray-500 text-sm">透過 AI 全自動服務機器，協助業者減少對洗髮人員的依賴，降低營運成本</p>
+            </div>
+
+            <div
+              class="flex flex-col items-center text-center bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300"
+            >
+              <div class="text-teal-600 mb-4">
+                <!--  -->
+                <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.33v5.5m0 0l-4 4m4-4l4 4"
+                  />
+                </svg>
+              </div>
+              <h4 class="text-xl font-bold text-gray-800 mb-2">提升服務效率</h4>
+              <p class="text-gray-500 text-sm">全自動化的服務流程，縮短服務時間，增加店家接待顧客的能力</p>
+            </div>
+
+            <div
+              class="flex flex-col items-center text-center bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300"
+            >
+              <div class="text-teal-600 mb-4">
+                <!--  -->
+                <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
+                  />
+                </svg>
+              </div>
+              <h4 class="text-xl font-bold text-gray-800 mb-2">無技術門檻</h4>
+              <p class="text-gray-500 text-sm">設備操作簡便，店家無需專業技術即可引進，適合各類型店家及創業者</p>
+            </div>
+
+            <div
+              class="flex flex-col items-center text-center bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300"
+            >
+              <div class="text-teal-600 mb-4">
+                <!--  -->
+                <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                  />
+                </svg>
+              </div>
+              <h4 class="text-xl font-bold text-gray-800 mb-2">創新顧客體驗</h4>
+              <p class="text-gray-500 text-sm">結合 AI 科技與傳統服務，為顧客帶來全新感受，提升顧客滿意度</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 第二欄: FAQ (互斥下拉式選單) -->
+      <section class="py-20 bg-gray-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-4xl font-bold text-gray-800 text-center mb-12">常見問題 (FAQ)</h2>
+
+          <!-- FAQ 容器: 這是 JS 內容注入點 -->
+          <div id="faq-accordion" class="space-y-4">
+            <!-- 內容將由 JavaScript 動態生成 -->
+            <div class="text-center text-gray-500 p-8" id="faq-loading-indicator">載入中...</div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 頁腳 (Footer) 區塊 (保持不變) -->
+    <footer class="bg-gray-900 mt-16">
+      <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 gap-8 md:grid-cols-4">
+          <!-- 欄位 1: 品牌資訊 -->
+          <div>
+            <h3 class="text-2xl font-bold text-white mb-4">Style Salon</h3>
+            <p class="text-gray-400 text-sm">專注於提供頂級美髮造型和個人化服務，讓您展現最自信的自我。</p>
+            <div class="mt-4">
+              <a href="./contact.html" class="text-teal-400 hover:text-teal-300 text-sm font-semibold transition">
+                立即預約體驗
+              </a>
+            </div>
+          </div>
+
+          <!-- 欄位 2: 快速導覽 -->
+          <div>
+            <h3 class="text-lg font-semibold text-white mb-4">快速導覽</h3>
+            <ul class="space-y-3">
+              <li><a href="index.html" class="text-gray-400 hover:text-teal-400 transition">首頁</a></li>
+              <li><a href="about.html" class="text-gray-400 hover:text-teal-400 transition">關於我們</a></li>
+              <li><a href="scalp_therapy.html" class="text-gray-400 hover:text-teal-400 transition">頭皮理療</a></li>
+              <li><a href="gallery.html" class="text-gray-400 hover:text-teal-400 transition">造型畫廊</a></li>
+              <li><a href="contact.html" class="text-gray-400 hover:text-teal-400 transition">聯繫我們</a></li>
+            </ul>
+          </div>
+
+          <!-- 欄位 3: 聯絡資訊 -->
+          <div>
+            <h3 class="text-lg font-semibold text-white mb-4">聯絡資訊</h3>
+            <ul class="space-y-3 text-gray-400 text-sm">
+              <li class="flex items-center">
+                <!-- Email Icon -->
+                <svg
+                  class="w-5 h-5 mr-2 text-teal-400 flex-shrink-0"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+                info@stylesalon.com
+              </li>
+              <li class="flex items-center">
+                <!-- Phone Icon -->
+                <svg
+                  class="w-5 h-5 mr-2 text-teal-400 flex-shrink-0"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                  />
+                </svg>
+                (02) 1234-5678
+              </li>
+              <li class="flex items-start">
+                <!-- Location Icon -->
+                <svg
+                  class="w-5 h-5 mr-2 mt-1 text-teal-400 flex-shrink-0"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                  />
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                  />
+                </svg>
+                台北市時尚區美學路101號
+              </li>
+            </ul>
+          </div>
+
+          <!-- 欄位 4: 社群媒體 -->
+          <div>
+            <h3 class="text-lg font-semibold text-white mb-4">追蹤我們</h3>
+            <div class="flex space-x-4">
+              <!-- Facebook Icon (SVG) -->
+              <a href="#" class="text-gray-400 hover:text-teal-400 transition" aria-label="Facebook">
+                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    fill-rule="evenodd"
+                    d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h3.295l-.52 3.993h-2.775v7.04c4.78-1.574 8.368-5.904 8.368-10.941z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </a>
+              <!-- Instagram Icon (SVG) -->
+              <a href="#" class="text-gray-400 hover:text-teal-400 transition" aria-label="Instagram">
+                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    fill-rule="evenodd"
+                    d="M12.315 2c2.43 0 2.71.01 3.65.05 1.53.07 2.45.34 3.09.58.7.26 1.25.6 1.83 1.18s.92 1.13 1.18 1.83c.24.64.5 1.56.58 3.09.04.94.05 1.22.05 3.65s-.01 2.71-.05 3.65c-.07 1.53-.34 2.45-.58 3.09-.26.7-.6 1.25-1.18 1.83s-1.13.92-1.83 1.18c-.64.24-1.56.5-3.09.58-.94.04-1.22.05-3.65.05s-2.71-.01-3.65-.05c-1.53-.07-2.45-.34-3.09-.58-.7-.26-1.25-.6-1.83-1.18s-.92-1.13-1.18-1.83c-.24-.64-.5-1.56-.58-3.09-.04-.94-.05-1.22-.05-3.65s.01-2.71.05-3.65c.07-1.53.34-2.45.58-3.09.26-.7.6-1.25 1.18-1.83s1.13-.92 1.83-1.18c.64-.24 1.56-.5 3.09-.58.94-.04 1.22-.05 3.65-.05zm0-2.3c-2.8 0-3.17.01-4.28.05-1.92.09-3.23.47-4.38.93-1.18.49-2.07 1.17-2.91 2.01-.84.84-1.52 1.73-2.01 2.91-.46 1.15-.84 2.46-.93 4.38-.04 1.11-.05 1.48-.05 4.28s.01 3.17.05 4.28c.09 1.92.47 3.23.93 4.38.49 1.18 1.17 2.07 2.01 2.91.84.84 1.73 1.52 2.91 2.01 1.15.46 2.46.84 4.38.93 1.11.04 1.48.05 4.28.05s3.17-.01 4.28-.05c1.92-.09 3.23-.47 4.38-.93 1.18-.49 2.07-1.17 2.91-2.01.84-.84 1.52-1.73 2.01-2.91.46-1.15.84-2.46.93-4.38.04-1.11.05-1.48.05-4.28s-.01-3.17-.05-4.28c-.09-1.92-.47-3.23-.93-4.38-.49-1.18-1.17-2.07-2.01-2.91-.84-.84-1.73-1.52-2.91-2.01-1.15-.46-2.46-.84-4.38-.93-1.11-.04-1.48-.05-4.28-.05zM12 16.7c-2.59 0-4.7-2.11-4.7-4.7s2.11-4.7 4.7-4.7 4.7 2.11 4.7 4.7-2.11 4.7-4.7 4.7zm0-7.7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM18.5 4.65a1.2 1.2 0 11-2.4 0 1.2 1.2 0 012.4 0z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </a>
+              <!-- YouTube Icon (SVG) -->
+              <a href="#" class="text-gray-400 hover:text-teal-400 transition" aria-label="YouTube">
+                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path
+                    d="M19.615 3.184c-3.604-.853-7.63-.853-11.234 0-4.047.901-5.72 2.898-6.19 6.22C1.566 14.865 3.513 18.006 7.42 19.897c1.372.686 2.86.993 4.58.993 1.72 0 3.208-.307 4.58-.993 3.907-1.891 5.854-5.032 5.564-9.043-.47-3.322-2.143-5.319-6.19-6.22zM12 17.5c-2.485 0-4.5-2.015-4.5-4.5s2.015-4.5 4.5-4.5 4.5 2.015 4.5 4.5-2.015 4.5-4.5 4.5z"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 版權聲明 -->
+        <div class="mt-12 border-t border-gray-700 pt-8">
+          <p class="text-center text-gray-500 text-sm">
+            &copy; <span id="current-year"></span> Style Salon. All rights reserved. | 隱私權政策 | 服務條款
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // ---------------------------------------------
+      // FAQ 數據 (將所有問答整理到此處)
+      // ---------------------------------------------
+      const faqData = [
+        {
+          question: '什麼是頭療？',
+          answer:
+            '頭療是一種專注於頭皮和髮根的護理方式，通過按摩、草本護理、紅光療法等手段，促進頭部的血液循環，舒緩頭皮壓力，改善毛囊健康，從而達到護髮和放鬆的效果。頭療不僅能改善頭皮健康，還能有效減少頭皮屑、控油、舒緩頭癢，甚至幫助緩解壓力和焦慮。',
+        },
+        {
+          question: '頭療對頭皮有什麼具體的好處？',
+          answer:
+            '頭療能促進頭部血液循環，激活毛囊，改善頭皮環境，從而預防掉髮、控油、減少頭皮屑，並調節頭皮的PH值。頭療還能針對油性、乾性或敏感性頭皮提供個性化護理，有助於達到健康的髮質。',
+        },
+        {
+          question: '頭療能改善掉髮問題嗎？',
+          answer:
+            '頭療能夠刺激頭皮血液循環，增強毛囊的營養供應，從而促進毛髮的生長。對於由於血液循環不良引起的掉髮問題，頭療能夠幫助修復毛囊，緩解掉髮症狀。若搭配使用含有養髮成分的護理產品，效果更為顯著。',
+        },
+        {
+          question: '使用頭療會不會感覺很痛？',
+          answer:
+            '頭療的按摩力度和手法可以根據個人需求調整。一般情況下，頭療使用的水壓、紅光及按摩手法是溫和的，應該不會感到不適。如果有任何不舒服的感覺，可以隨時告知技術人員調整力度或停止某些操作。我們的理療過程非常舒適和放鬆。主要包含溫和的清潔、舒緩按摩和營養導入步驟，許多顧客會在過程中感到極度的放鬆甚至入睡。',
+        },
+        {
+          question: '頭療適合哪些人群？',
+          answer:
+            '頭療適合所有想要改善頭皮健康、保養頭髮的人群，尤其對以下人群效果顯著：有掉髮、頭皮屑、油脂分泌過多或乾燥等頭皮問題的人；經常處於壓力大的環境中，容易造成頭皮緊繃的人；以及希望促進頭部血液循環、放鬆壓力的人。',
+        },
+        {
+          question: '我應該多久做一次頭療？',
+          answer:
+            '頭療的頻率可以根據個人需求調整。通常，對於有頭皮問題的人，建議每週進行一次頭療，這樣能夠有效改善頭皮健康和髮質。對於正常頭皮或想要放鬆的顧客，則可以每月進行1-2次頭療。',
+        },
+        {
+          question: '頭療會對染燙過的頭髮有影響嗎？',
+          answer:
+            '頭療對染燙過的頭髮是安全的，尤其是使用草本植物成分的護理產品，對毛髮沒有化學傷害。事實上，頭療能夠為染燙受損的頭髮提供滋養，促進毛髮恢復健康。對於染燙後的髮質，建議選擇滋養型的護髮精華或護髮乳，達到最佳效果。',
+        },
+
+        {
+          question: '紅光療法在頭療中有什麼作用？',
+          answer:
+            '紅光療法是一種非侵入性的光療技術，它能穿透頭皮，促進細胞新陳代謝，改善血液循環，並有助於修復受損的毛囊。紅光有助於減少頭皮的炎症，緩解頭癢，並促進毛髮健康生長。這使得紅光療法成為頭療中的一個重要組成部分。',
+        },
+        {
+          question: 'CUT-YOU 使用的產品有何不同？',
+          answer:
+            '我們堅持使用天然有機頭皮護理產品，不含刺激性化學物質，溫和且高效，確保在理療過程中不會對頭皮造成二次傷害。',
+        },
+      ]
+
+      // ---------------------------------------------
+      // FAQ 互斥下拉功能 (Accordion JS)
+      // ---------------------------------------------
+
+      // 封裝展開邏輯
+      function openItem(button, content) {
+        button.setAttribute('aria-expanded', 'true')
+        content.classList.add('open')
+        // 讓圓角看起來更自然，移除底部圓角
+        button.classList.remove('rounded-xl')
+        button.classList.add('rounded-t-xl')
+      }
+
+      // 封裝收合邏輯
+      function closeItem(button, content) {
+        button.setAttribute('aria-expanded', 'false')
+        content.classList.remove('open')
+        // 恢復底部圓角
+        button.classList.add('rounded-xl')
+        button.classList.remove('rounded-t-xl')
+      }
+
+      // 設置所有 FAQ 項目的事件監聽器
+      function setupAccordionListeners() {
+        const accordionContainer = document.getElementById('faq-accordion')
+        // 使用 querySelectorAll 獲取所有由 JS 生成的 FAQ 項目
+        const faqItems = accordionContainer.querySelectorAll('[data-faq-item]')
+
+        faqItems.forEach((item) => {
+          const button = item.querySelector('.accordion-button')
+          const content = item.querySelector('.accordion-content')
+
+          button.addEventListener('click', () => {
+            const isExpanded = button.getAttribute('aria-expanded') === 'true'
+
+            // 1. 如果當前點擊的項目已經展開，則收合它
+            if (isExpanded) {
+              closeItem(button, content)
+              return
+            }
+
+            // 2. 否則，先收合所有其他項目 (互斥功能)
+            faqItems.forEach((otherItem) => {
+              const otherButton = otherItem.querySelector('.accordion-button')
+              const otherContent = otherItem.querySelector('.accordion-content')
+              // 檢查其他項目是否展開
+              if (otherButton !== button && otherButton.getAttribute('aria-expanded') === 'true') {
+                closeItem(otherButton, otherContent)
+              }
+            })
+
+            // 3. 展開當前點擊的項目
+            openItem(button, content)
+          })
+        })
+      }
+
+      // ---------------------------------------------
+      // 動態生成 FAQ HTML 結構
+      // ---------------------------------------------
+      function renderFaqs() {
+        const container = document.getElementById('faq-accordion')
+        // 移除載入指示器
+        const loadingIndicator = document.getElementById('faq-loading-indicator')
+        if (loadingIndicator) {
+          loadingIndicator.remove()
+        }
+
+        let htmlContent = ''
+
+        faqData.forEach((item, index) => {
+          // 為每個 FAQ 項目構建 HTML 模板
+          htmlContent += `
+                    <div class="bg-white rounded-xl shadow-lg border border-gray-200" data-faq-item>
+                        <button class="accordion-button w-full flex justify-between items-center p-5 text-lg font-semibold text-left text-gray-800 hover:bg-teal-50 rounded-xl focus:outline-none" aria-expanded="false">
+                            <span>${item.question}</span>
+                            <svg class="accordion-icon w-6 h-6 text-teal-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </button>
+                        <div class="accordion-content text-gray-600">
+                            <p>${item.answer}</p>
+                        </div>
+                    </div>
+                `
+        })
+
+        // 將生成的內容插入到容器中
+        container.innerHTML = htmlContent
+
+        // 設置事件監聽器 (必須在元素插入 DOM 後調用)
+        setupAccordionListeners()
+      }
+
+      // ---------------------------------------------
+      // Header JS - 保持不變
+      // ---------------------------------------------
+      const mobileMenuButton = document.getElementById('mobile-menu-button')
+      const mobileMenu = document.getElementById('mobile-menu')
+      const menuIcon = document.getElementById('menu-icon')
+      const closeIcon = document.getElementById('close-icon')
+
+      mobileMenuButton.addEventListener('click', () => {
+        const isCollapsed = mobileMenu.classList.contains('max-h-0')
+
+        if (isCollapsed) {
+          mobileMenu.classList.remove('max-h-0', 'opacity-0')
+          mobileMenu.classList.add('max-h-screen', 'opacity-100')
+
+          menuIcon.classList.add('hidden')
+          closeIcon.classList.remove('hidden')
+        } else {
+          mobileMenu.classList.remove('max-h-screen', 'opacity-100')
+          mobileMenu.classList.add('max-h-0', 'opacity-0')
+
+          menuIcon.classList.remove('hidden')
+          closeIcon.classList.add('hidden')
+        }
+      })
+
+      // ---------------------------------------------
+      // 頁面初始化
+      // ---------------------------------------------
+      window.onload = () => {
+        // 設定版權年份
+        document.getElementById('current-year').textContent = new Date().getFullYear()
+        // 渲染 FAQ 內容並設置交互功能
+        renderFaqs()
+      }
+    </script>
+  </body>
+</html>

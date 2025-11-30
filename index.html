@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>非滿版響應式輪播圖與導航欄</title>
+    <!-- 載入 Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* 確保輪播區域隱藏超出範圍的內容 */
+      .carousel-track {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+      }
+      .slide {
+        flex: 0 0 100%; /* 每個滑塊佔據 100% 寬度 */
+        min-width: 100%;
+        height: auto;
+        overflow: hidden;
+      }
+      .dot {
+        transition: background-color 0.3s;
+      }
+      .dot.active {
+        background-color: #059669; /* teal-600: 配合 header 主色調 */
+        width: 35px;
+      }
+      /* 自定義 active 導航連結的樣式，使用 Tailwind class 處理 */
+      /* py-5 用於確保在 h-20 的 header 中垂直居中 */
+      .nav-link {
+        @apply text-gray-700 hover:text-teal-600 transition duration-150 py-5;
+      }
+      .nav-link.active {
+        @apply text-teal-700 font-bold border-b-3 border-teal-600;
+        border-bottom-width: 3px; /* 稍微加粗底部線 */
+      }
+      .mobile-menu-link {
+        @apply block px-3 py-3 text-base font-medium text-gray-700 hover:bg-teal-50 hover:text-teal-600 rounded-md;
+      }
+      .mobile-menu-link.active {
+        @apply bg-teal-100 text-teal-700;
+      }
+
+      /* 為了確保 max-h-screen 動畫效果，我們需要手動設定一些過渡屬性 */
+      #mobile-menu {
+        transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+      }
+      .serv-svg {
+        width: 100%;
+        height: 120px; /* 你要固定高可以改這裡 */
+        object-fit: contain;
+        object-position: center;
+        display: block;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100 font-sans">
+    <!-- 響應式 Header 導航欄 -->
+    <div id="header-wrapper" class="origin-top w-full">
+      <div id="header-placeholder"></div>
+    </div>
+
+    <main class="py-12">
+      <!-- 原始內容: 輪播圖 (保持不變) -->
+      <section class="mb-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-4xl mx-auto">
+          <!-- 輪播容器 - 設置最大寬度並居中 -->
+          <div id="carouselContainer" class="relative bg-white shadow-xl rounded-xl overflow-hidden">
+            <!-- 輪播內容軌道 -->
+            <div id="carouselTrack" class="carousel-track">
+              <!-- Slide 1 -->
+              <div class="slide">
+                <img src="./images/indexPoster2.png" alt="景觀一圖片" class="w-full object-cover" />
+                <div class="p-6 bg-white">
+                  <p class="text-lg font-semibold text-gray-700">New Arrival AI WASH</p>
+                  <p class="text-sm text-gray-500 mt-1">AI 科技洗護，開創美髮新紀元</p>
+                </div>
+              </div>
+
+              <!-- Slide 2 -->
+              <div class="slide">
+                <img src="./images/indexPoster3.png" alt="景觀二圖片" class="w-full object-cover" />
+                <div class="p-6 bg-white">
+                  <p class="text-lg font-semibold text-gray-700">New Arrival</p>
+                  <p class="text-sm text-gray-500 mt-1">sculp teart</p>
+                </div>
+              </div>
+
+              <!-- Slide 3 -->
+              <div class="slide">
+                <img
+                  src="https://placehold.co/800x400/991B1B/FFFFFF?text=景觀三"
+                  alt="景觀三圖片"
+                  class="w-full object-cover"
+                />
+                <div class="p-6 bg-white">
+                  <p class="text-lg font-semibold text-gray-700">熱情如火的夕陽</p>
+                  <p class="text-sm text-gray-500 mt-1">第三個內容展示了溫暖而強烈的色彩。</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 左右控制按鈕 -->
+            <button
+              id="prevBtn"
+              class="absolute top-1/2 left-0 transform -translate-y-1/2 bg-black bg-opacity-30 hover:bg-opacity-50 text-white p-3 rounded-r-lg focus:outline-none transition duration-300 z-10"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button
+              id="nextBtn"
+              class="absolute top-1/2 right-0 transform -translate-y-1/2 bg-black bg-opacity-30 hover:bg-opacity-50 text-white p-3 rounded-l-lg focus:outline-none transition duration-300 z-10"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+
+            <!-- 導航圓點 (Dots) -->
+            <div
+              id="dotsContainer"
+              class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 p-2 rounded-full bg-black bg-opacity-10"
+            >
+              <!-- 圓點將由 JavaScript 動態生成 -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 第一欄: 圖片左, 文字右 (關於我們) -->
+      <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-4xl font-extrabold text-gray-900 text-center mb-12">關於我們</h2>
+          <div class="flex flex-col md:flex-row items-center gap-8 lg:gap-12">
+            <div
+              class="md:w-1/2 rounded-xl shadow-2xl overflow-hidden transform hover:scale-[1.02] transition duration-300"
+            >
+              <img src="./images/machine02.png" alt="關於我們的圖片：專業沙龍內部" class="w-full h-full object-cover" />
+            </div>
+            <div class="md:w-1/2 space-y-6">
+              <h3 class="text-3xl font-bold text-teal-600">澳洲首台自動洗頭機</h3>
+              <p class="text-gray-600 text-lg leading-relaxed">
+                我們專注於智慧清潔科技的研發，致力為您打造更輕鬆、舒適的洗護體驗。自動洗頭機融合智能感測、柔和水流與多段按摩模式，能精準呵護頭皮、深入清潔，帶來如同專業沙龍般的享受。安全防護設計貼心可靠，操作簡單直覺，讓洗頭從此不再費力。讓科技替您放鬆身心，提升生活品質。
+              </p>
+              <ul class="space-y-2 text-gray-700">
+                <li class="flex items-start">
+                  <svg
+                    class="h-5 w-5 text-teal-500 mr-2 flex-shrink-0 mt-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>市場化及流量優化產品</span>
+                </li>
+                <li class="flex items-start">
+                  <svg
+                    class="h-5 w-5 text-teal-500 mr-2 flex-shrink-0 mt-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>系統化的舒適體驗</span>
+                </li>
+                <li class="flex items-start">
+                  <svg
+                    class="h-5 w-5 text-teal-500 mr-2 flex-shrink-0 mt-1"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>身心放鬆的多功能設計</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 第二欄: 文字左, 圖片右 (交替佈局) -->
+      <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex flex-col md:flex-row-reverse items-center gap-8 lg:gap-12">
+            <div
+              class="md:w-1/2 rounded-xl shadow-2xl overflow-hidden transform hover:scale-[1.02] transition duration-300"
+            >
+              <img src="./images/machine02.png" alt="設計師工作實景" class="w-full h-full object-cover" />
+            </div>
+            <div class="md:w-1/2 space-y-6">
+              <h3 class="text-3xl font-bold text-gray-800">AI全自動洗頭機</h3>
+              <p class="text-gray-600 text-lg leading-relaxed">
+                洗頭機規格： <br />長220cm寬85cm高90cm 電壓220V(需要2個插座、總計不超過1000w）
+              </p>
+              <p>
+                「AI 科技生活GO 全自動洗頭機」用機台取代人力洗頭，提供客戶更實惠、舒適且健康、安全的洗頭選擇。
+                中型店家每年用於「洗頭」的人力成本，若加上勞健保得超過100萬新台幣，如果換成「AI全自動洗頭機」，每年成本僅不到8萬，相當於年年都幫老闆省下上百萬！
+              </p>
+              <a
+                href="./services.html"
+                class="inline-flex items-center text-teal-600 font-semibold hover:text-teal-800 transition duration-150"
+              >
+                了解更多服務項目
+                <svg class="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 第四欄: 4 張卡片 (一排 4 張佈局) -->
+      <section class="py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 class="text-4xl font-extrabold text-gray-900 text-center mb-12">服務項目</h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- 4 張卡片 -->
+            <div
+              class="flex flex-col items-center text-center bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300"
+            >
+              <div class="text-teal-600 mb-4">
+                <!--  -->
+                <img src="./images/haircut.jpg" alt="剪髮圖示" class="serv-svg" />
+              </div>
+              <h4 class="text-xl font-bold text-gray-800 mb-2">剪髮</h4>
+              <p class="text-gray-500 text-sm">男士女士兒童</p>
+            </div>
+
+            <div
+              class="flex flex-col items-center text-center bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300"
+            >
+              <div class="text-teal-600 mb-4">
+                <!--  -->
+                <img src="./images/indexPoster.png" alt="剪髮圖示" class="serv-svg" />
+              </div>
+              <h4 class="text-xl font-bold text-gray-800 mb-2">洗髮</h4>
+              <p class="text-gray-500 text-sm">全自動化的服務流程，縮短服務時間，增加店家接待顧客的能力</p>
+            </div>
+
+            <div
+              class="flex flex-col items-center text-center bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300"
+            >
+              <div class="text-teal-600 mb-4">
+                <!--  -->
+                <img src="./images/color.jpg" alt="剪髮圖示" class="serv-svg" />
+              </div>
+              <h4 class="text-xl font-bold text-gray-800 mb-2">染髮</h4>
+              <p class="text-gray-500 text-sm">設備操作簡便，店家無需專業技術即可引進，適合各類型店家及創業者</p>
+            </div>
+
+            <div
+              class="flex flex-col items-center text-center bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300"
+            >
+              <div class="text-teal-600 mb-4">
+                <!--  -->
+                <img src="./images/treatment.jpg" alt="剪髮圖示" class="serv-svg" />
+              </div>
+              <h4 class="text-xl font-bold text-gray-800 mb-2">護髮及頭皮理療</h4>
+              <p class="text-gray-500 text-sm">結合 AI 科技與傳統服務，為顧客帶來全新感受，提升顧客滿意度</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <div id="footer-placeholder"></div>
+
+    <!-- 頁腳 (Footer) 區塊 -->
+    <script>
+      // 先載入 Header
+      fetch('/header.html')
+        .then((res) => res.text())
+        .then((html) => {
+          document.getElementById('header-placeholder').innerHTML = html
+
+          // Header 插入後再執行 Header 的 JS 初始化
+          initHamburgerMenu()
+          initHeaderVars()
+        })
+
+      // 再載入 Footer
+      fetch('/footer.html')
+        .then((res) => res.text())
+        .then((html) => {
+          document.getElementById('footer-placeholder').innerHTML = html
+        })
+
+      // 將 header DOM 綁定拆成一個 function
+      function initHeaderVars() {
+        window.mobileMenuButton = document.getElementById('mobile-menu-button')
+        window.mobileMenu = document.getElementById('mobile-menu')
+        window.menuIcon = document.getElementById('menu-icon')
+        window.closeIcon = document.getElementById('close-icon')
+
+        console.log('Header DOM 綁定完畢')
+      }
+    </script>
+
+    <script>
+      // 輪播圖相關 JS（這些原本就是存在 index.html 裡，所以 OK）
+      const track = document.getElementById('carouselTrack')
+      const slides = Array.from(track.children)
+      const nextButton = document.getElementById('nextBtn')
+      const prevButton = document.getElementById('prevBtn')
+      const dotsContainer = document.getElementById('dotsContainer')
+
+      const slideCount = slides.length
+      let currentSlideIndex = 0
+
+      const generateDots = () => {
+        for (let i = 0; i < slideCount; i++) {
+          const dot = document.createElement('button')
+          dot.classList.add('dot', 'h-3', 'w-3', 'rounded-full', 'bg-gray-300', 'hover:bg-teal-400')
+          dot.addEventListener('click', () => moveToSlide(i))
+          dotsContainer.appendChild(dot)
+        }
+      }
+
+      const updateCarousel = () => {
+        track.style.transform = `translateX(-${currentSlideIndex * 100}%)`
+        Array.from(dotsContainer.children).forEach((dot, index) => {
+          dot.classList.toggle('active', index === currentSlideIndex)
+          dot.classList.toggle('bg-teal-600', index === currentSlideIndex)
+        })
+      }
+
+      const moveToSlide = (i) => ((currentSlideIndex = i), updateCarousel())
+      const moveNext = () => ((currentSlideIndex = (currentSlideIndex + 1) % slideCount), updateCarousel())
+      const movePrev = () => ((currentSlideIndex = (currentSlideIndex - 1 + slideCount) % slideCount), updateCarousel())
+
+      nextButton.addEventListener('click', moveNext)
+      prevButton.addEventListener('click', movePrev)
+
+      window.onload = () => {
+        generateDots()
+        updateCarousel()
+      }
+    </script>
+
+    <script>
+      // 漢堡選單初始化
+      function initHamburgerMenu() {
+        const btn = document.getElementById('mobile-menu-button')
+        const menu = document.getElementById('mobile-menu')
+        const menuIcon = document.getElementById('menu-icon')
+        const closeIcon = document.getElementById('close-icon')
+
+        if (!btn || !menu) return
+
+        btn.addEventListener('click', () => {
+          const open = menu.classList.contains('max-h-0')
+          menu.classList.toggle('max-h-0', !open)
+          menu.classList.toggle('max-h-96', open)
+          menu.classList.toggle('opacity-0', !open)
+          menu.classList.toggle('opacity-100', open)
+
+          menuIcon.classList.toggle('hidden', open)
+          closeIcon.classList.toggle('hidden', !open)
+        })
+      }
+    </script>
+  </body>
+</html>
