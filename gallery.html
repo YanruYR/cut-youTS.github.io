@@ -182,20 +182,29 @@
       window.addEventListener('load', scaleHeader)
     </script>
     <script>
-      // 載入 header
-      fetch('/header.html')
-        .then((res) => res.text())
-        .then((html) => {
-          document.getElementById('header-placeholder').innerHTML = html
+       async function loadNav() {
+        const headerContainer = document.getElementById('header-placeholder')
+        const header = await fetch('./header.html')
+        const headerhtml = await header.text()
+        headerContainer.innerHTML = headerhtml
 
-          // 等 header 插入後再綁定事件
-          initHamburgerMenu()
-        })
-      fetch('/footer.html')
-        .then((res) => res.text())
-        .then((html) => {
-          document.getElementById('footer-placeholder').innerHTML = html
-        })
+        const footerContainer = document.getElementById('footer-placeholder')
+        const footer = await fetch('./footer.html')
+        const footerhtml = await footer.text()
+        footerContainer.innerHTML = footerhtml
+
+        initHamburgerMenu()
+        initHeaderVars()
+      }
+      loadNav()
+       function initHeaderVars() {
+        window.mobileMenuButton = document.getElementById('mobile-menu-button')
+        window.mobileMenu = document.getElementById('mobile-menu')
+        window.menuIcon = document.getElementById('menu-icon')
+        window.closeIcon = document.getElementById('close-icon')
+
+        console.log('Header DOM 綁定完畢')
+      }
 
       // 漢堡選單功能：動畫 + 開合
       function initHamburgerMenu() {
