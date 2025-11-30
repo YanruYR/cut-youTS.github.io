@@ -287,23 +287,38 @@
     <!-- 頁腳 (Footer) 區塊 -->
     <script>
       // 先載入 Header
-      fetch('/header.html')
-        .then((res) => res.text())
-        .then((html) => {
-          document.getElementById('header-placeholder').innerHTML = html
+      // fetch('/header.html')
+      //   .then((res) => res.text())
+      //   .then((html) => {
+      //     document.getElementById('header-placeholder').innerHTML = html
 
-          // Header 插入後再執行 Header 的 JS 初始化
-          initHamburgerMenu()
-          initHeaderVars()
-        })
+      //     // Header 插入後再執行 Header 的 JS 初始化
+      //     initHamburgerMenu()
+      //     initHeaderVars()
+      //   })
 
-      // 再載入 Footer
-      fetch('/footer.html')
-        .then((res) => res.text())
-        .then((html) => {
-          document.getElementById('footer-placeholder').innerHTML = html
-        })
+      // // 再載入 Footer
+      // fetch('/footer.html')
+      //   .then((res) => res.text())
+      //   .then((html) => {
+      //     document.getElementById('footer-placeholder').innerHTML = html
+      //   })
 
+      async function loadNav() {
+        const headerContainer = document.getElementById('header-placeholder')
+        const header = await fetch('./header.html')
+        const headerhtml = await header.text()
+        headerContainer.innerHTML = headerhtml
+
+        const footerContainer = document.getElementById('footer-placeholder')
+        const footer = await fetch('./footer.html')
+        const footerhtml = await footer.text()
+        footerContainer.innerHTML = footerhtml
+
+        initHamburgerMenu()
+        initHeaderVars()
+      }
+      loadNav()
       // 將 header DOM 綁定拆成一個 function
       function initHeaderVars() {
         window.mobileMenuButton = document.getElementById('mobile-menu-button')
