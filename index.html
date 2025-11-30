@@ -233,7 +233,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 class="text-4xl font-extrabold text-gray-900 text-center mb-12">服務項目</h2>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             <!-- 4 張卡片 -->
             <div
               class="flex flex-col items-center text-center bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300"
@@ -242,19 +242,11 @@
                 <!--  -->
                 <img src="./images/haircut.jpg" alt="剪髮圖示" class="serv-svg" />
               </div>
-              <h4 class="text-xl font-bold text-gray-800 mb-2">剪髮</h4>
-              <p class="text-gray-500 text-sm">男士女士兒童</p>
-            </div>
-
-            <div
-              class="flex flex-col items-center text-center bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition duration-300"
-            >
-              <div class="text-teal-600 mb-4">
-                <!--  -->
-                <img src="./images/indexPoster.png" alt="剪髮圖示" class="serv-svg" />
+              <h4 class="text-xl font-bold text-gray-800 mb-2">HAIR CUT</h4>
+              <div class="text-left">
+                <p class="text-gray-500 text-sm">為你打造自然的日常美感</p>
+                <p class="text-gray-500 text-sm">剪出態度，走出自信！</p>
               </div>
-              <h4 class="text-xl font-bold text-gray-800 mb-2">洗髮</h4>
-              <p class="text-gray-500 text-sm">全自動化的服務流程，縮短服務時間，增加店家接待顧客的能力</p>
             </div>
 
             <div
@@ -264,8 +256,11 @@
                 <!--  -->
                 <img src="./images/color.jpg" alt="剪髮圖示" class="serv-svg" />
               </div>
-              <h4 class="text-xl font-bold text-gray-800 mb-2">染髮</h4>
-              <p class="text-gray-500 text-sm">設備操作簡便，店家無需專業技術即可引進，適合各類型店家及創業者</p>
+              <h4 class="text-xl font-bold text-gray-800 mb-2">Colouring</h4>
+              <div class="text-left">
+                <p class="text-gray-500 text-sm">色彩柔和，氣質自然。</p>
+                <p class="text-gray-500 text-sm">光影之中，綻放你的色。</p>
+              </div>
             </div>
 
             <div
@@ -275,8 +270,11 @@
                 <!--  -->
                 <img src="./images/treatment.jpg" alt="剪髮圖示" class="serv-svg" />
               </div>
-              <h4 class="text-xl font-bold text-gray-800 mb-2">護髮及頭皮理療</h4>
-              <p class="text-gray-500 text-sm">結合 AI 科技與傳統服務，為顧客帶來全新感受，提升顧客滿意度</p>
+              <h4 class="text-xl font-bold text-gray-800 mb-2">Treatment</h4>
+              <div class="text-left">
+                <p class="text-gray-500 text-sm">科技修護，讓髮質重生。</p>
+                <p class="text-gray-500 text-sm">從護髮開始，寵愛自己。</p>
+              </div>
             </div>
           </div>
         </div>
@@ -285,113 +283,6 @@
     <div id="footer-placeholder"></div>
 
     <!-- 頁腳 (Footer) 區塊 -->
-    <script>
-      // 先載入 Header
-      // fetch('/header.html')
-      //   .then((res) => res.text())
-      //   .then((html) => {
-      //     document.getElementById('header-placeholder').innerHTML = html
-
-      //     // Header 插入後再執行 Header 的 JS 初始化
-      //     initHamburgerMenu()
-      //     initHeaderVars()
-      //   })
-
-      // // 再載入 Footer
-      // fetch('/footer.html')
-      //   .then((res) => res.text())
-      //   .then((html) => {
-      //     document.getElementById('footer-placeholder').innerHTML = html
-      //   })
-
-      async function loadNav() {
-        const headerContainer = document.getElementById('header-placeholder')
-        const header = await fetch('./header.html')
-        const headerhtml = await header.text()
-        headerContainer.innerHTML = headerhtml
-
-        const footerContainer = document.getElementById('footer-placeholder')
-        const footer = await fetch('./footer.html')
-        const footerhtml = await footer.text()
-        footerContainer.innerHTML = footerhtml
-
-        initHamburgerMenu()
-        initHeaderVars()
-      }
-      loadNav()
-      // 將 header DOM 綁定拆成一個 function
-      function initHeaderVars() {
-        window.mobileMenuButton = document.getElementById('mobile-menu-button')
-        window.mobileMenu = document.getElementById('mobile-menu')
-        window.menuIcon = document.getElementById('menu-icon')
-        window.closeIcon = document.getElementById('close-icon')
-
-        console.log('Header DOM 綁定完畢')
-      }
-    </script>
-
-    <script>
-      // 輪播圖相關 JS（這些原本就是存在 index.html 裡，所以 OK）
-      const track = document.getElementById('carouselTrack')
-      const slides = Array.from(track.children)
-      const nextButton = document.getElementById('nextBtn')
-      const prevButton = document.getElementById('prevBtn')
-      const dotsContainer = document.getElementById('dotsContainer')
-
-      const slideCount = slides.length
-      let currentSlideIndex = 0
-
-      const generateDots = () => {
-        for (let i = 0; i < slideCount; i++) {
-          const dot = document.createElement('button')
-          dot.classList.add('dot', 'h-3', 'w-3', 'rounded-full', 'bg-gray-300', 'hover:bg-teal-400')
-          dot.addEventListener('click', () => moveToSlide(i))
-          dotsContainer.appendChild(dot)
-        }
-      }
-
-      const updateCarousel = () => {
-        track.style.transform = `translateX(-${currentSlideIndex * 100}%)`
-        Array.from(dotsContainer.children).forEach((dot, index) => {
-          dot.classList.toggle('active', index === currentSlideIndex)
-          dot.classList.toggle('bg-teal-600', index === currentSlideIndex)
-        })
-      }
-
-      const moveToSlide = (i) => ((currentSlideIndex = i), updateCarousel())
-      const moveNext = () => ((currentSlideIndex = (currentSlideIndex + 1) % slideCount), updateCarousel())
-      const movePrev = () => ((currentSlideIndex = (currentSlideIndex - 1 + slideCount) % slideCount), updateCarousel())
-
-      nextButton.addEventListener('click', moveNext)
-      prevButton.addEventListener('click', movePrev)
-
-      window.onload = () => {
-        generateDots()
-        updateCarousel()
-      }
-    </script>
-
-    <script>
-      // 漢堡選單初始化
-      function initHamburgerMenu() {
-        const btn = document.getElementById('mobile-menu-button')
-        const menu = document.getElementById('mobile-menu')
-        const menuIcon = document.getElementById('menu-icon')
-        const closeIcon = document.getElementById('close-icon')
-
-        if (!btn || !menu) return
-
-        btn.addEventListener('click', () => {
-          const open = menu.classList.contains('max-h-0')
-          menu.classList.toggle('max-h-0', !open)
-          menu.classList.toggle('max-h-96', open)
-          menu.classList.toggle('opacity-0', !open)
-          menu.classList.toggle('opacity-100', open)
-
-          menuIcon.classList.toggle('hidden', open)
-          closeIcon.classList.toggle('hidden', !open)
-        })
-      }
-    </script>
+    <script src="./main.js"></script>
   </body>
 </html>
