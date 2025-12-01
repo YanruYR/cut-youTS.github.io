@@ -22,44 +22,44 @@ function initHeaderVars() {
 
   console.log('Header DOM 綁定完畢')
 }
-// 輪播圖
-const track = document.getElementById('carouselTrack')
-const slides = Array.from(track.children)
-const nextButton = document.getElementById('nextBtn')
-const prevButton = document.getElementById('prevBtn')
-const dotsContainer = document.getElementById('dotsContainer')
+// // 輪播圖
+// const track = document.getElementById('carouselTrack')
+// const slides = Array.from(track.children)
+// const nextButton = document.getElementById('nextBtn')
+// const prevButton = document.getElementById('prevBtn')
+// const dotsContainer = document.getElementById('dotsContainer')
 
-const slideCount = slides.length
-let currentSlideIndex = 0
+// const slideCount = slides.length
+// let currentSlideIndex = 0
 
-const generateDots = () => {
-  for (let i = 0; i < slideCount; i++) {
-    const dot = document.createElement('button')
-    dot.classList.add('dot', 'h-3', 'w-3', 'rounded-full', 'bg-gray-300', 'hover:bg-teal-400')
-    dot.addEventListener('click', () => moveToSlide(i))
-    dotsContainer.appendChild(dot)
-  }
-}
+// const generateDots = () => {
+//   for (let i = 0; i < slideCount; i++) {
+//     const dot = document.createElement('button')
+//     dot.classList.add('dot', 'h-3', 'w-3', 'rounded-full', 'bg-gray-300', 'hover:bg-teal-400')
+//     dot.addEventListener('click', () => moveToSlide(i))
+//     dotsContainer.appendChild(dot)
+//   }
+// }
 
-const updateCarousel = () => {
-  track.style.transform = `translateX(-${currentSlideIndex * 100}%)`
-  Array.from(dotsContainer.children).forEach((dot, index) => {
-    dot.classList.toggle('active', index === currentSlideIndex)
-    dot.classList.toggle('bg-teal-600', index === currentSlideIndex)
-  })
-}
+// const updateCarousel = () => {
+//   track.style.transform = `translateX(-${currentSlideIndex * 100}%)`
+//   Array.from(dotsContainer.children).forEach((dot, index) => {
+//     dot.classList.toggle('active', index === currentSlideIndex)
+//     dot.classList.toggle('bg-teal-600', index === currentSlideIndex)
+//   })
+// }
 
-const moveToSlide = (i) => ((currentSlideIndex = i), updateCarousel())
-const moveNext = () => ((currentSlideIndex = (currentSlideIndex + 1) % slideCount), updateCarousel())
-const movePrev = () => ((currentSlideIndex = (currentSlideIndex - 1 + slideCount) % slideCount), updateCarousel())
+// const moveToSlide = (i) => ((currentSlideIndex = i), updateCarousel())
+// const moveNext = () => ((currentSlideIndex = (currentSlideIndex + 1) % slideCount), updateCarousel())
+// const movePrev = () => ((currentSlideIndex = (currentSlideIndex - 1 + slideCount) % slideCount), updateCarousel())
 
-nextButton.addEventListener('click', moveNext)
-prevButton.addEventListener('click', movePrev)
+// nextButton.addEventListener('click', moveNext)
+// prevButton.addEventListener('click', movePrev)
 
-window.onload = () => {
-  generateDots()
-  updateCarousel()
-}
+// window.onload = () => {
+//   generateDots()
+//   updateCarousel()
+// }
 // 漢堡選單初始化
 function initHamburgerMenu() {
   const btn = document.getElementById('mobile-menu-button')
