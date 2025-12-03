@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>服務項目與價格 | Style Salon</title>
+    <title>Service</title>
     <!-- 載入 Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -52,8 +52,10 @@
       <!-- 頂部標題區域 -->
       <section class="bg-teal-600 pt-16 pb-12">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 class="text-5xl font-extrabold text-white mb-4">Style Salon 服務項目與價格</h1>
-          <p class="text-xl text-teal-200">清晰透明的價格，提供最優質的專業美髮服務。</p>
+          <h1 class="text-5xl font-extrabold text-white mb-4">Our services</h1>
+          <p class="text-xl text-teal-200">
+            We offer transparent pricing and the highest quality professional hair services.
+          </p>
         </div>
       </section>
 
@@ -76,39 +78,43 @@
 
               <!-- 右側內容與價格表 -->
               <div class="md:w-2/3 p-6 sm:p-10 lg:p-12">
-                <h2 class="text-3xl font-bold text-teal-700 mb-2">一、 剪髮服務 (Haircut)</h2>
+                <h2 class="text-3xl font-bold text-teal-700 mb-2">Haircut</h2>
                 <p class="text-gray-600 mb-6 border-b pb-4 border-teal-100">
-                  從經典到前衛，為您量身打造最適合的髮型。包含專業洗髮與造型吹整。
+                  From classic to avant-garde, we'll create the perfect hairstyle for you.
                 </p>
 
                 <div class="overflow-x-auto">
                   <table class="w-full text-left price-table rounded-lg overflow-hidden">
                     <thead>
                       <tr>
-                        <th class="rounded-tl-lg">服務項目</th>
-                        <th class="rounded-tr-lg text-right">價格 (元)</th>
+                        <th class="rounded-tl-lg">Item</th>
+                        <th class="rounded-tr-lg text-right">Price</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td>男生剪髮</td>
-                        <td class="text-right">18</td>
+                        <td>Men/Boy standard cut</td>
+                        <td class="text-right">$18</td>
                       </tr>
                       <tr>
-                        <td>女生剪髮</td>
-                        <td class="text-right">20</td>
+                        <td>Lady/Girl standard cut</td>
+                        <td class="text-right">$20</td>
                       </tr>
                       <tr>
-                        <td>男生造型剪髮</td>
-                        <td class="text-right">25</td>
+                        <td>Men/Boy styling</td>
+                        <td class="text-right">$25</td>
                       </tr>
                       <tr>
-                        <td>女生造型剪髮</td>
-                        <td class="text-right">25</td>
+                        <td>Lady/Girl styling</td>
+                        <td class="text-right">$25</td>
                       </tr>
                       <tr>
-                        <td>修鬍子</td>
-                        <td class="text-right">10</td>
+                        <td>Beard trim</td>
+                        <td class="text-right">$10</td>
+                      </tr>
+                      <tr>
+                        <td>Line(no pattern)</td>
+                        <td class="text-right">$10</td>
                       </tr>
                     </tbody>
                   </table>
@@ -122,35 +128,36 @@
             >
               <!-- 左側內容與價格表 (順序對調以增加視覺變化) -->
               <div class="md:w-2/3 p-6 sm:p-10 lg:p-12 order-2 md:order-1">
-                <h2 class="text-3xl font-bold text-rose-700 mb-2">二、 染髮服務 (Hair Dye)</h2>
+                <h2 class="text-3xl font-bold text-rose-700 mb-2">Colouring</h2>
                 <p class="text-gray-600 mb-6 border-b pb-4 border-rose-100">
-                  使用頂級進口染劑，色彩飽和持久，並最大程度降低對髮質的傷害。價格依長度調整。
+                  Using top-quality imported dyes, the color is saturated and long-lasting, while minimizing damage to
+                  hair. Prices vary depending on length.
                 </p>
 
                 <div class="overflow-x-auto">
                   <table class="w-full text-left price-table rounded-lg overflow-hidden">
                     <thead>
                       <tr>
-                        <th class="rounded-tl-lg bg-rose-100 text-rose-800">服務項目</th>
+                        <th class="rounded-tl-lg bg-rose-100 text-rose-800">Item</th>
                         <th class="bg-rose-100 text-rose-800">長度說明</th>
-                        <th class="rounded-tr-lg bg-rose-100 text-rose-800 text-right">價格 (元)</th>
+                        <th class="rounded-tr-lg bg-rose-100 text-rose-800 text-right">Price</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td>染髮</td>
-                        <td>短髮 (耳上)</td>
-                        <td class="text-right">70</td>
+                        <td>Short hair</td>
+                        <td>(above ear)</td>
+                        <td class="text-right">$70</td>
                       </tr>
                       <tr>
-                        <td>染髮</td>
-                        <td>中長髮 (齊肩)</td>
-                        <td class="text-right">90</td>
+                        <td>Medium-length</td>
+                        <td>shoulder-length</td>
+                        <td class="text-right">$90</td>
                       </tr>
                       <tr>
-                        <td>染髮</td>
-                        <td>長髮 (過肩)</td>
-                        <td class="text-right">110</td>
+                        <td>Long hair</td>
+                        <td>past shoulder</td>
+                        <td class="text-right">$110</td>
                       </tr>
                     </tbody>
                   </table>
@@ -184,31 +191,32 @@
 
               <!-- 右側內容與價格表 -->
               <div class="md:w-2/3 p-6 sm:p-10 lg:p-12">
-                <h2 class="text-3xl font-bold text-green-700 mb-2">三、 護理服務 (Treatment)</h2>
+                <h2 class="text-3xl font-bold text-green-700 mb-2">Treatment</h2>
                 <p class="text-gray-600 mb-6 border-b pb-4 border-green-100">
-                  專注於頭皮和髮絲的深層修護，讓您的秀髮從內而外恢復健康光澤與強韌度。
+                  Focusing on deep repair of the scalp and hair, it restores your hair's healthy shine and strength from
+                  the inside out.
                 </p>
 
                 <div class="overflow-x-auto">
                   <table class="w-full text-left price-table rounded-lg overflow-hidden">
                     <thead>
                       <tr>
-                        <th class="rounded-tl-lg bg-green-100 text-green-800">服務項目</th>
-                        <th class="rounded-tr-lg bg-green-100 text-green-800 text-right">價格 (元)</th>
+                        <th class="rounded-tl-lg bg-green-100 text-green-800">Item</th>
+                        <th class="rounded-tr-lg bg-green-100 text-green-800 text-right">Price</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td>洗髮 (含基礎按摩)</td>
-                        <td class="text-right">45</td>
+                        <td>Hair SPA WASH (AI Machine)</td>
+                        <td class="text-right">$45</td>
                       </tr>
                       <tr>
-                        <td>頭皮深度護理</td>
-                        <td class="text-right">120</td>
+                        <td>Hair care</td>
+                        <td class="text-right">$120</td>
                       </tr>
                       <tr>
-                        <td>深層結構護髮</td>
-                        <td class="text-right">120</td>
+                        <td>Scalp serum care</td>
+                        <td class="text-right">$120</td>
                       </tr>
                     </tbody>
                   </table>
@@ -219,13 +227,16 @@
 
           <!-- 底部備註與行動呼籲 -->
           <div class="mt-16 text-center bg-teal-50 p-8 rounded-xl border-2 border-teal-200">
-            <p class="text-xl font-bold text-teal-800 mb-3">價格透明</p>
-            <p class="text-gray-600 mb-6">以上均為單項服務費用。如有想了解組合優惠，歡迎聯繫我們客服。</p>
+            <p class="text-xl font-bold text-teal-800 mb-3">Transparent pricing (no additional fees).</p>
+            <p class="text-gray-600 mb-6">
+              The above are individual service fees. Please contact our customer service for details on bundled service
+              offers.
+            </p>
             <a
               href="./contact.html"
               class="inline-flex items-center justify-center px-8 py-4 border border-transparent text-base font-bold rounded-full text-white bg-teal-600 hover:bg-teal-700 transition duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105"
             >
-              預約您的變美之旅 &rarr;
+              Please contact us for more information. &rarr;
             </a>
           </div>
         </div>
